@@ -3,14 +3,19 @@
 
 #include <iostream>
 #include <SDL.h>
+#include <stdlib.h>
+#include <time.h>
 #include "Screen.h"
+#include "Swarm.h"
+
+
 
 using namespace std;
 using namespace MY;
 
 int main(int argc, char ** argv)
 {
-	std::cout << "Hello World!\n";
+	srand(time(nullptr));
 
 	Screen screen;
 
@@ -19,6 +24,8 @@ int main(int argc, char ** argv)
 		cout << "Error initialising SDL." << "\n";
 	}
 	
+	Swarm swarm;
+
 	// Game loop
 	while (true)
 	{
@@ -26,19 +33,26 @@ int main(int argc, char ** argv)
 		//Draw particles
 		//Check for messages/events
 
-		for (unsigned int y = 0; y < screen.SCREEN_WIDTH; y++)
+		Uint32 elapsedTime = SDL_GetTicks();
+
+		unsigned char green = (unsigned char)((1 + SDL_sin(elapsedTime * 0.0001)) * 128); // Make the number of range between 0-255
+		unsigned char red = (unsigned char)((1 + SDL_sin(elapsedTime * 0.0002)) * 128);
+		unsigned char blue = (unsigned char)((1 + SDL_sin(elapsedTime * 0.0003)) * 128);
+
+		const Particle* const pParticles = swarm.GetParticles();
+		for (size_t i = 0; i < Swarm::NPARTICLES; i++)
 		{
-			for (unsigned int x = 0; x < screen.SCREEN_HEIGHT; x++)
-			{
-				if (x % 2 == 0 || y % 2 == 0)
-				{
-					screen.SetPixel(x, y, 0, 128, 0);
-				}
-				
-			}
+			Particle particle = pParticles[i];
+
+			float x = (particle.xPos + 1) * Screen::SCREEN_WIDTH / 2; // Set the position range to screen width
+			float y = (particle.yPos + 1) * Screen::SCREEN_HEIGHT / 2; // Set the position range to screen height
+
+			screen.SetPixel(x, y, red, green, blue);
 		}
 
-		//screen.SetPixel(400, 300, 255, 0, 0);
+		
+
+			
 
 		screen.Update();
 
