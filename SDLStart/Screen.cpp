@@ -8,7 +8,7 @@ Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer(N
 
 bool Screen::Init()
 {
-	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{		
 		return false;
 	}	
@@ -30,7 +30,7 @@ bool Screen::Init()
 		return false;
 	}
 
-	m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TextureAccess::SDL_TEXTUREACCESS_STATIC, 64, 64);
+	m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TextureAccess::SDL_TEXTUREACCESS_STATIC, SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (m_texture == NULL)
 	{
 		SDL_DestroyRenderer(m_renderer);
@@ -74,6 +74,11 @@ void Screen::SetPixel(int x, int y, Uint8 red, Uint8 green, Uint8 blue)
 	color += 0xFF;
 
 	m_buffer[(y * SCREEN_WIDTH) + x] = color;
+}
+
+void Screen::Clear()
+{
+	std::memset(m_buffer, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
 }
 
 

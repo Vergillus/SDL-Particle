@@ -26,6 +26,9 @@ int main(int argc, char ** argv)
 	
 	Swarm swarm;
 
+	const int halfWidth = Screen::SCREEN_WIDTH / 2;
+	const int halfHeight = Screen::SCREEN_HEIGHT / 2;
+
 	// Game loop
 	while (true)
 	{
@@ -34,6 +37,8 @@ int main(int argc, char ** argv)
 		//Check for messages/events
 
 		Uint32 elapsedTime = SDL_GetTicks();
+		screen.Clear();
+		swarm.Update();
 
 		unsigned char green = (unsigned char)((1 + SDL_sin(elapsedTime * 0.0001)) * 128); // Make the number of range between 0-255
 		unsigned char red = (unsigned char)((1 + SDL_sin(elapsedTime * 0.0002)) * 128);
@@ -44,15 +49,13 @@ int main(int argc, char ** argv)
 		{
 			Particle particle = pParticles[i];
 
-			float x = (particle.xPos + 1) * Screen::SCREEN_WIDTH / 2; // Set the position range to screen width
-			float y = (particle.yPos + 1) * Screen::SCREEN_HEIGHT / 2; // Set the position range to screen height
+			float x = (particle.xPos + 1) * halfWidth; // Set the position range to screen width
+			float y = ((particle.yPos) * halfWidth) + halfHeight; // Set the position true aspect ratio.
+			
+			
 
 			screen.SetPixel(x, y, red, green, blue);
-		}
-
-		
-
-			
+		}			
 
 		screen.Update();
 

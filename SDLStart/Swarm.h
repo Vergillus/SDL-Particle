@@ -16,6 +16,8 @@ public:
 	Swarm();
 	~Swarm();
 
+	void Update();
+
 	inline const Particle* const GetParticles() { return pParticles; };
 };
 
