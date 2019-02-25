@@ -8,8 +8,6 @@
 #include "Screen.h"
 #include "Swarm.h"
 
-
-
 using namespace std;
 using namespace MY;
 
@@ -38,7 +36,7 @@ int main(int argc, char ** argv)
 
 		Uint32 elapsedTime = SDL_GetTicks();
 		screen.Clear();
-		swarm.Update();
+		swarm.Update(elapsedTime);
 
 		unsigned char green = (unsigned char)((1 + SDL_sin(elapsedTime * 0.0001)) * 128); // Make the number of range between 0-255
 		unsigned char red = (unsigned char)((1 + SDL_sin(elapsedTime * 0.0002)) * 128);

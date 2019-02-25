@@ -13,7 +13,7 @@ Particle::Particle(): xPos(0), yPos(0)
 	yPos = ((2.0f * rand()) / RAND_MAX) - 1;*/
 
 	direction = (2 * M_PI * rand()) / RAND_MAX;	
-	speed = (0.001 * rand()) / RAND_MAX;
+	speed = (0.0001 * rand()) / RAND_MAX;	
 }
 
 
@@ -21,13 +21,19 @@ Particle::~Particle()
 {
 }
 
-void Particle::Update()
+void Particle::Update(int time)
 {
 	float xSpeed = speed * cos(direction);
 	float ySpeed = speed * sin(direction);
 
-	xPos += xSpeed;
-	yPos += ySpeed;
+	if (xPos < -.5 || xPos > .5)
+		xSpeed = -xSpeed;
+
+	if (yPos < -.5 || yPos > .5)
+		ySpeed = -ySpeed;
+	
+	xPos += xSpeed * time;
+	yPos += ySpeed * time;
 
 }
 

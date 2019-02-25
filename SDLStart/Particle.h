@@ -9,12 +9,11 @@ struct Particle
 
 	float speed;
 	float direction;
-	
 
 public:
 	Particle();
 	~Particle();
-	void Update();
+	void Update(int time);
 };
 
 
