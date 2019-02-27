@@ -17,6 +17,7 @@ namespace MY {
 		SDL_Renderer* m_renderer;
 		SDL_Texture* m_texture;
 		Uint32 *m_buffer;
+		Uint32 *m_blurBuffer;
 
 	public:
 		Screen();
@@ -26,6 +27,7 @@ namespace MY {
 		void Update();
 		void SetPixel(int x, int y, Uint8 red, Uint8 green, Uint8 blue);
 		void Clear();
+		void BoxBlur();
 	};
 
 }
