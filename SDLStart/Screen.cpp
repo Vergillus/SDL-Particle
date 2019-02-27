@@ -2,13 +2,13 @@
 
 namespace MY {
 
-Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer(NULL)
+Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer(NULL), m_blurBuffer(NULL)
 {
 }
 
 bool Screen::Init()
 {
-	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{		
 		return false;
 	}	
@@ -30,7 +30,7 @@ bool Screen::Init()
 		return false;
 	}
 
-	m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TextureAccess::SDL_TEXTUREACCESS_STATIC, 64, 64);
+	m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TextureAccess::SDL_TEXTUREACCESS_STATIC, SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (m_texture == NULL)
 	{
 		SDL_DestroyRenderer(m_renderer);
@@ -40,9 +40,11 @@ bool Screen::Init()
 	}
 	
 	m_buffer = new Uint32[SCREEN_WIDTH * SCREEN_HEIGHT];
+	m_blurBuffer = new Uint32[SCREEN_WIDTH * SCREEN_HEIGHT];
 	
 	if(m_buffer != nullptr)
 		std::memset(m_buffer, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));			
+	std::memset(m_blurBuffer, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
 
 	return true;
 }
@@ -76,6 +78,59 @@ void Screen::SetPixel(int x, int y, Uint8 red, Uint8 green, Uint8 blue)
 	m_buffer[(y * SCREEN_WIDTH) + x] = color;
 }
 
+void Screen::BoxBlur()
+{
+	//Swap the buffers, so pixel is in m_blurBuffer and we are drawing to m_buffer.
+	Uint32* temp = m_buffer;
+	m_buffer = m_blurBuffer;
+	m_blurBuffer = temp;
+
+	for (unsigned int y = 0; y < SCREEN_HEIGHT; y++)
+	{
+		for (unsigned int x = 0; x < SCREEN_WIDTH; x++)
+		{
+
+			int redTotal = 0;
+			int greenTotal = 0;
+			int blueTotal = 0;
+
+			for (unsigned int row = -1; row <= 1; row++)
+			{
+				for (unsigned int col = -1; col <= 1; col++)
+				{
+					int currentX = x + col;
+					int currentY = y + row;
+
+					if (currentX >= 0 && currentX < SCREEN_WIDTH && currentY >= 0 && currentY < SCREEN_HEIGHT)
+					{
+						Uint32 color = m_blurBuffer[currentY * SCREEN_WIDTH + currentX];
+
+						Uint8 red = color >> 24;
+						Uint8 green = color >> 16;
+						Uint8 blue = color >> 8;
+
+						redTotal += red;
+						greenTotal += green;
+						blueTotal += blue;
+
+					}
+				}
+			}
+
+			Uint8 red = redTotal / 9;
+			Uint8 green = greenTotal / 9;
+			Uint8 blue = blueTotal / 9;
+
+			SetPixel(x, y, red, green, blue);
+		}
+	}
+}
+
+void Screen::Clear()
+{
+	std::memset(m_buffer, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
+}
+
 
 bool Screen::ProcessEvents()
 {
@@ -96,6 +151,7 @@ bool Screen::ProcessEvents()
 void Screen::Close()
 {
 	delete[] m_buffer;
+	delete[] m_blurBuffer;
 
 	SDL_DestroyRenderer(m_renderer);
 	SDL_DestroyTexture(m_texture);
