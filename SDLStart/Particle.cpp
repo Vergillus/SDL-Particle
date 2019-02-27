@@ -26,11 +26,11 @@ void Particle::Update(int time)
 	float xSpeed = speed * cos(direction);
 	float ySpeed = speed * sin(direction);
 
-	if (xPos < -.5 || xPos > .5)
+	/*if (xPos < -.5 || xPos > .5)
 		xSpeed = -xSpeed;
 
 	if (yPos < -.5 || yPos > .5)
-		ySpeed = -ySpeed;
+		ySpeed = -ySpeed;*/
 	
 	xPos += xSpeed * time;
 	yPos += ySpeed * time;

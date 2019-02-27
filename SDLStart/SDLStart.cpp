@@ -35,7 +35,7 @@ int main(int argc, char ** argv)
 		//Check for messages/events
 
 		Uint32 elapsedTime = SDL_GetTicks();
-		screen.Clear();
+		//screen.Clear();
 		swarm.Update(elapsedTime);
 
 		unsigned char green = (unsigned char)((1 + SDL_sin(elapsedTime * 0.0001)) * 128); // Make the number of range between 0-255
@@ -54,6 +54,9 @@ int main(int argc, char ** argv)
 
 			screen.SetPixel(x, y, red, green, blue);
 		}			
+
+
+		screen.BoxBlur();
 
 		screen.Update();
 
