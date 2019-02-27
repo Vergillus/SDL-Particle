@@ -35,7 +35,7 @@ int main(int argc, char ** argv)
 		//Check for messages/events
 
 		Uint32 elapsedTime = SDL_GetTicks();
-		//screen.Clear();
+		//screen.Clear();		
 		swarm.Update(elapsedTime);
 
 		unsigned char green = (unsigned char)((1 + SDL_sin(elapsedTime * 0.0001)) * 128); // Make the number of range between 0-255
@@ -43,7 +43,7 @@ int main(int argc, char ** argv)
 		unsigned char blue = (unsigned char)((1 + SDL_sin(elapsedTime * 0.0003)) * 128);
 
 		const Particle* const pParticles = swarm.GetParticles();
-		for (size_t i = 0; i < Swarm::NPARTICLES; i++)
+		for (unsigned int i = 0; i < Swarm::NPARTICLES; i++)
 		{
 			Particle particle = pParticles[i];
 
@@ -54,11 +54,10 @@ int main(int argc, char ** argv)
 
 			screen.SetPixel(x, y, red, green, blue);
 		}			
-
-
+		
 		screen.BoxBlur();
 
-		screen.Update();
+		screen.Update();		
 
 		if (screen.ProcessEvents() == false)
 		{

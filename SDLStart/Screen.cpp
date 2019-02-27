@@ -42,9 +42,11 @@ bool Screen::Init()
 	m_buffer = new Uint32[SCREEN_WIDTH * SCREEN_HEIGHT];
 	m_blurBuffer = new Uint32[SCREEN_WIDTH * SCREEN_HEIGHT];
 	
-	if(m_buffer != nullptr)
+	if (m_buffer != nullptr && m_blurBuffer != nullptr)
+	{
 		std::memset(m_buffer, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));			
-	std::memset(m_blurBuffer, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
+		std::memset(m_blurBuffer, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
+	}
 
 	return true;
 }
@@ -94,9 +96,9 @@ void Screen::BoxBlur()
 			int greenTotal = 0;
 			int blueTotal = 0;
 
-			for (unsigned int row = -1; row <= 1; row++)
+			for (int row = -1; row <= 1; row++)
 			{
-				for (unsigned int col = -1; col <= 1; col++)
+				for (int col = -1; col <= 1; col++)
 				{
 					int currentX = x + col;
 					int currentY = y + row;
