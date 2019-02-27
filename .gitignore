@@ -371,3 +371,19 @@ healthchecksdb
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
+Debug/SDLStart.ilk
+Debug/SDLStart.ilk
+Debug/SDLStart.ilk
+*.ilk
+Debug/SDLStart.pdb
+SDLStart/Debug/SDLStart.log
+SDLStart/Debug/SDLStart.tlog/CL.command.1.tlog
+SDLStart/Debug/SDLStart.tlog/link.command.1.tlog
+SDLStart/Debug/SDLStart.tlog/CL.write.1.tlog
+SDLStart/Debug/SDLStart.tlog/link.command.1.tlog
+SDLStart/Debug/SDLStart.tlog/link.read.1.tlog
+SDLStart/Debug/SDLStart.tlog/link.write.1.tlog
+SDLStart/Debug/SDLStart.tlog/SDLStart.lastbuildstate
+SDLStart/Debug/vc141.idb
+SDLStart/Debug/vc141.pdb
+SDLStart/SDLStart.vcxproj
